@@ -10,6 +10,7 @@ class House(models.Model):
     description = models.TextField()           # CharField 보다 긴 글 작성 시 사용
     address = models.CharField(max_length=140)
     pet_allowed = models.BooleanField(default=True, help_text="Does this house allow pets?")
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE)     # owner ID ('pk')   # user 앱에서 user model 찾아라     # on_delete : 참조하는 모델이 삭제되면 어떻게 할까? CASCADE : 연쇄
 
     def __str__(self):
         return self.name    # admin 패널 내 House object(1) 표시 수정
