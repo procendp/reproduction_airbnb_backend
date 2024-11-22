@@ -11,6 +11,7 @@ class Room(models.Model):
         PRIVATE_ROOM = ("private_room", "Private Room")
         SHARED_ROOM = "shared_room", "Shared Room"
 
+    name = models.CharField(max_length=180, default="")
     country = models.CharField(max_length=50, default="South Korea")
     city = models.CharField(max_length=80, default="Seoul")
     price = models.PositiveIntegerField()
@@ -25,6 +26,9 @@ class Room(models.Model):
     # created_at = models.DateTimeField(auto_now_add=True)       # auto_now_add : 해당 object가 처음 생성됐을 때의 시간으로 설정.. Room 생성될 때마다
     # updated_at = models.DateTimeField(auto_now=True)           # auto_now :     해당 object가 저장될 때마다 현재 date로 설정... Room 업데이트할 때마다
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Amenity(CommonModel):     # 공용으로 사용하기로 한 CommonModel을 상속받음
 
@@ -32,4 +36,10 @@ class Amenity(CommonModel):     # 공용으로 사용하기로 한 CommonModel�
 
     name = models.CharField(max_length=150)
     description = models.CharField(max_length=150, default="", blank=True)
+        
+    def __str__(self) -> str:
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = "Amenities"       # title 수정 : Amenitys -> Amenities
         
