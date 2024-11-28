@@ -29,6 +29,9 @@ class Room(CommonModel):
 
     def __str__(self) -> str:
         return self.name
+    
+    # def total_amenities(self):
+    #     return self.amenities.count()
 
 
 class Amenity(CommonModel):     # 공용으로 사용하기로 한 CommonModel을 상속받음
