@@ -21,9 +21,9 @@ class Room(CommonModel):
     address = models.CharField(max_length=250)
     pet_friendly = models.BooleanField(default=True)
     kind = models.CharField(max_length=20, choices=RoomKindChoices.choices)
-    owner = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    amenities = models.ManyToManyField("rooms.Amenity")
-    category = models.ForeignKey("categories.Category", null=True, blank=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="rooms")     # related_name="rooms"   :  room_set을 rooms로 대체하여 보여줌, ORM 활용 시 유용
+    amenities = models.ManyToManyField("rooms.Amenity", related_name="rooms")
+    category = models.ForeignKey("categories.Category", null=True, blank=True, on_delete=models.SET_NULL, related_name="rooms")
     # created_at = models.DateTimeField(auto_now_add=True)       # auto_now_add : 해당 object가 처음 생성됐을 때의 시간으로 설정.. Room 생성될 때마다
     # updated_at = models.DateTimeField(auto_now=True)           # auto_now :     해당 object가 저장될 때마다 현재 date로 설정... Room 업데이트할 때마다
 
