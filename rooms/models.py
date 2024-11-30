@@ -27,11 +27,21 @@ class Room(CommonModel):
     # created_at = models.DateTimeField(auto_now_add=True)       # auto_now_add : 해당 object가 처음 생성됐을 때의 시간으로 설정.. Room 생성될 때마다
     # updated_at = models.DateTimeField(auto_now=True)           # auto_now :     해당 object가 저장될 때마다 현재 date로 설정... Room 업데이트할 때마다
 
-    def __str__(self) -> str:
-        return self.name
+    def __str__(room) -> str:
+        return room.name
     
-    # def total_amenities(self):
-    #     return self.amenities.count()
+    def total_amenities(room):
+        return room.amenities.count()
+    
+    def rating(room):
+        count = room.reviews.count()
+        if count == 0:
+            return "No Reviews"
+        else:
+            total_rating = 0
+            for review in room.reviews.all().values("rating"):
+                total_rating += review["rating"]
+            return round(total_rating / count, 2)    # 소수점 2자리까지
 
 
 class Amenity(CommonModel):     # 공용으로 사용하기로 한 CommonModel을 상속받음
