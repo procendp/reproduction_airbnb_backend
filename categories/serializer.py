@@ -3,7 +3,27 @@ from .models import Category
 
 # translate django to JSON for the browser
 
-class CategorySerializer(serializers.Serializer):
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = "__all__"          # 모두
+        # fields = ("name", "kind")   # 일부
+        # exclude = ("created_at",)   # 제외하고
+    
+
+    
+
+
+
+
+
+
+
+#########################################
+##### original (before refactoring) #####
+#########################################
+""" class CategorySerializer(serializers.Serializer):
     
     # explaining something what Category have to serialzer
     # from djnango DB model to JSON data
@@ -21,3 +41,4 @@ class CategorySerializer(serializers.Serializer):
         instance.save()
 
         return instance
+ """
