@@ -7,7 +7,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = "__all__"          # 모두
+        fields = (
+            "name",
+            "kind"
+        )
+        # fields = "__all__"          # 모두
         # fields = ("name", "kind")   # 일부
         # exclude = ("created_at",)   # 제외하고
     
