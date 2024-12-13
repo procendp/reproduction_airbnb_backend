@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from .models import Amenity, Room
 from users.serializer import TinyUserSerializer
+from reviews.serializers import ReviewSerializer
 from categories.serializer import CategorySerializer
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -19,6 +20,7 @@ class RoomDetailSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     rating = serializers.SerializerMethodField()    # rating 계산할 method를 만들 예정
     is_owner = serializers.SerializerMethodField()
+    # reviews = ReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = Room
