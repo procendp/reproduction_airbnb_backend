@@ -24,7 +24,7 @@ class RoomDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        exclude = ("amenities")
+        exclude = ("amenities",)
         # fields = "__all__"
         # depth = 1           # object ID만 표시하지 않고, object의 모든 것을 보여주게 됨... but, password처럼 개인 정보들도 다 보여주기 때문에 보안 필요
 
