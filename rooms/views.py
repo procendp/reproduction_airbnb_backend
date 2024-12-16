@@ -1,15 +1,18 @@
 from django.conf import settings
-from rest_framework.views import APIView
+from django.utils import timezone
 from django.db import transaction
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly    # GET만 pass, 나머지 POST, PUT, DELETE은 인증 필요
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound, NotAuthenticated, ParseError, PermissionDenied
+from rest_framework.exceptions import NotFound, ParseError, PermissionDenied
 from .models import Amenity, Room
-from categories.models import Category
 from .serializers import AmenitySerializer, RoomListSerializer, RoomDetailSerializer
+from categories.models import Category
 from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly    # GET만 pass, 나머지 POST, PUT, DELETE은 인증 필요
+from bookings.models import Booking
+from bookings.serializers import PublicBookingSerializer, CreateRoomBookingSerializer
 
 class Amenities(APIView):
 
@@ -220,3 +223,37 @@ class RoomPhotos(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+        
+class RoomBookings(APIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except:
+            raise NotFound
+        
+    def get(self, request, pk):
+        room = self.get_object(pk)
+        now = timezone.localtime(timezone.now()).date()   # 날짜만
+        bookings = Booking.objects.filter(room=room, kind=Booking.BookingKindChoices.ROOM, check_in__gt=now,)   # check_in__gt=now : 비교해서 미래 예약만 받도록
+        # bookings = Booking.objects.filter(room__pk=pk)      # room__pk=pk : 이렇게 표현하면 get_object로 정의하지 않아도 됨..   *** user가 존재하는 room의 pk를 보낼거라고 확신하면 쓰자, 그럼 room에 대한 조회를 먼저 할 필요 없으니까
+        serializer = PublicBookingSerializer(bookings, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, pk):
+        room = self.get_object(pk)
+        serializer = CreateRoomBookingSerializer(data=request.data)
+        if serializer.is_valid():
+            booking = serializer.save(
+                room=room,
+                user=request.user,
+                kind=Booking.BookingKindChoices.ROOM,
+            )
+            serializer = PublicBookingSerializer(booking)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+    # def put(self, request, pk):
+    # def delete(self, request, pk):
