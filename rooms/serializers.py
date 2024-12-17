@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from .models import Amenity, Room
-from users.serializer import TinyUserSerializer
+from users.serializers import TinyUserSerializer
 from reviews.serializers import ReviewSerializer
 from categories.serializer import CategorySerializer
 from medias.serializers import PhotoSerializer
