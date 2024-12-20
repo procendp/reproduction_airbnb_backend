@@ -5,7 +5,7 @@ from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from .models import Category
-from .serializer import CategorySerializer
+from .serializers import CategorySerializer
 
 
 class CategoryViewSet(ModelViewSet):
