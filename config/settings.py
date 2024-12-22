@@ -153,9 +153,10 @@ PAGE_SIZE = 5
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'config.authentication.TrustMeAuthentication',              # REST framework에서의 인증 절차 확인용
+        # 'config.authentication.TrustMeAuthentication',              # REST framework에서의 인증 절차 확인용
         'rest_framework.authentication.SessionAuthentication',      # SessionAuthentication : django rest framework에게 로그인한 유저가 누구인지 알려주는
         # 'rest_framework.authentication.BasicAuthentication',      # BasicAuthentication : URL 접속 시, 바로 username과 password 묻는 팝업 띄우고 요구
         'rest_framework.authentication.TokenAuthentication',        # TokenAuthentication : 토큰 발급 후 인증 가능하도록
+        'config.authentication.JWTAuthentication',
     ]
 }
