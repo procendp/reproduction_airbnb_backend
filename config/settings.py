@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",     # DB에 table 생성되니, migrate 필요..   makemigration 없어도 됨, 이미 생성돼있음
 ]
 
 CUSTOM_APPS =[
@@ -152,7 +153,9 @@ PAGE_SIZE = 5
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',      # django rest framework에게 로그인한 유저가 누구인지 알려줄 설정
-        'config.authentication.TrustMeAuthentication',
+        'config.authentication.TrustMeAuthentication',              # REST framework에서의 인증 절차 확인용
+        'rest_framework.authentication.SessionAuthentication',      # SessionAuthentication : django rest framework에게 로그인한 유저가 누구인지 알려주는
+        # 'rest_framework.authentication.BasicAuthentication',      # BasicAuthentication : URL 접속 시, 바로 username과 password 묻는 팝업 띄우고 요구
+        'rest_framework.authentication.TokenAuthentication',        # TokenAuthentication : 토큰 발급 후 인증 가능하도록
     ]
 }
