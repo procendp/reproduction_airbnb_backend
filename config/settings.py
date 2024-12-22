@@ -149,3 +149,10 @@ MEDIA_ROOT = "uploads"
 MEDIA_URL = "user-uploads/"
 
 PAGE_SIZE = 5
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',      # django rest framework에게 로그인한 유저가 누구인지 알려줄 설정
+        'config.authentication.TrustMeAuthentication',
+    ]
+}
