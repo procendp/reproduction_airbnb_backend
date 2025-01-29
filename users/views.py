@@ -45,6 +45,9 @@ class Users(APIView):
             user = serializer.save()
             user.set_password(password)     # user.password = password --> 이건 hash화 되지 않은 raw password이기 때문에 사용 x
             user.save()
+
+            login(request, user)
+            
             serializer = serializers.PrivateUserSerializer(user)
             return Response(serializer.data)
         else:
@@ -91,7 +94,7 @@ class LogIn(APIView):
             login(request, user)
             return Response({"ok": "Welcome!"})
         else:
-            return Response({"error": "wrong password"})
+            return Response({"error": "wrong password"}, status=status.HTTP_403_FORBIDDEN)
         
 class LogOut(APIView):
 
