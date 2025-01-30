@@ -1,3 +1,4 @@
+from time import sleep
 import jwt
 import requests
 from django.contrib.auth import authenticate, login, logout
@@ -94,13 +95,14 @@ class LogIn(APIView):
             login(request, user)
             return Response({"ok": "Welcome!"})
         else:
-            return Response({"error": "wrong password"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "wrong password"}, status=status.HTTP_400_BAD_REQUEST)
         
 class LogOut(APIView):
 
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
+        sleep(5)
         logout(request)
         return Response({"ok": "bye!"})
     
