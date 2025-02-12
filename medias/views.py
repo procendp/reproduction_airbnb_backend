@@ -26,13 +26,21 @@ class PhotoDetail(APIView):
     
 class GetUploadURL(APIView):
     def post(self, request):
+        settings.CF_ID = settings.CF_ID.strip("'").strip('"')
         url = f"https://api.cloudflare.com/client/v4/accounts/{settings.CF_ID}/images/v2/direct_upload"
+        print(f"CF_ID: {settings.CF_ID}")
+        print(f"API URL: {url}")
+        print(repr(settings.CF_ID))
+
         one_time_url = requests.post(
             url,
             headers={
                 "Authorization": f"Bearer {settings.CF_TOKEN}",
             },
         )
+        print(f"CF_TOKEN: {settings.CF_TOKEN}")
         one_time_url = one_time_url.json()
+        print("Cloudflare API Response:", one_time_url)  # 터미널에서 확인
+
         result = one_time_url.get("result")
         return Response({"id": result.get("id"), "uploadURL": result.get("uploadURL")})
