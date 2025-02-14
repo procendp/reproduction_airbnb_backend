@@ -189,13 +189,16 @@ REST_FRAMEWORK = {
     ]
 }
 
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
+if DEBUG:
 
+    CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
+    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]        # post 요청을 보낼 수 있는 웹사이트는 이 곳 뿐
+
+else:
+    CORS_ALLOWED_ORIGINS = ["https://airbnb-frontend-u9m8.onrender.com"]
+    CSRF_TRUSTED_ORIGINS = ["https://airbnb-frontend-u9m8.onrender.com"]
 
 CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]        # post 요청을 보낼 수 있는 웹사이트는 이 곳 뿐
-
 GH_SECRET = env("GH_SECRET")
 
 CF_ID = env("CF_ID")
