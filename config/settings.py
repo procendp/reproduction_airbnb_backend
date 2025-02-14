@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import environ
 import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 import dj_database_url
 
 env = environ.Env()
