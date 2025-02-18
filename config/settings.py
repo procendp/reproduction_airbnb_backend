@@ -198,7 +198,7 @@ else:
     CORS_ALLOWED_ORIGINS = ["https://airbnb-frontend-u9m8.onrender.com"]
     CSRF_TRUSTED_ORIGINS = ["https://airbnb-frontend-u9m8.onrender.com"]
 
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True                               # 인증 관련 요청 허용
 GH_SECRET = env("GH_SECRET")
 
 CF_ID = env("CF_ID")
