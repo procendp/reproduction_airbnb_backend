@@ -1,5 +1,4 @@
 from rest_framework.serializers import ModelSerializer
-<<<<<<< HEAD
 from rest_framework import serializers
 from .models import Amenity, Room
 from users.serializers import TinyUserSerializer
@@ -7,25 +6,16 @@ from reviews.serializers import ReviewSerializer
 from categories.serializers import CategorySerializer
 from medias.serializers import PhotoSerializer
 from wishlists.models import Wishlist
-=======
-from .models import Amenity, Room
-from users.serializer import TinyUserSerializer
-from categories.serializer import CategorySerializer
->>>>>>> 8212159 (setting the functions of the experiences. [GET, POST])
 
 class AmenitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Amenity
         fields = (
-<<<<<<< HEAD
             "pk",
-=======
->>>>>>> 8212159 (setting the functions of the experiences. [GET, POST])
             "name",
             "description"
         )
 
-<<<<<<< HEAD
 class RoomDetailSerializer(serializers.ModelSerializer):
 
     owner = TinyUserSerializer(read_only=True)    # depth = 1 사용하지 않고, user에 serializer 파일 생성 후, 필요한 부분만 가져옴
@@ -71,20 +61,6 @@ class RoomListSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     photos = PhotoSerializer(many=True, read_only=True)
 
-=======
-class RoomDetailSerializer(ModelSerializer):
-
-    owner = TinyUserSerializer(read_only=True)    # depth = 1 사용하지 않고, user에 serializer 파일 생성 후, 필요한 부분만 가져옴
-    amenities = AmenitySerializer(many=True)
-    category = CategorySerializer()
-
-    class Meta:
-        model = Room
-        fields = "__all__"
-        # depth = 1           # object ID만 표시하지 않고, object의 모든 것을 보여주게 됨... but, password처럼 개인 정보들도 다 보여주기 때문에 보안 필요
-
-class RoomListSerializer(ModelSerializer):
->>>>>>> 8212159 (setting the functions of the experiences. [GET, POST])
     class Meta:
         model = Room
         fields = (
@@ -92,7 +68,6 @@ class RoomListSerializer(ModelSerializer):
             "name",
             "country",
             "city",
-<<<<<<< HEAD
             "price",
             "rating",
             "is_owner",
@@ -105,7 +80,3 @@ class RoomListSerializer(ModelSerializer):
     def get_is_owner(self, room):
         request = self.context["request"]
         return room.owner == request.user
-=======
-            "price"
-        )
->>>>>>> 8212159 (setting the functions of the experiences. [GET, POST])
