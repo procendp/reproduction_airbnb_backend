@@ -8,7 +8,10 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
+<<<<<<< HEAD:categories/serializers.py
             "pk",
+=======
+>>>>>>> 8212159 (setting the functions of the experiences. [GET, POST]):categories/serializer.py
             "name",
             "kind"
         )
