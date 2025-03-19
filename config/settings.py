@@ -200,6 +200,7 @@ else:
 
 CORS_ALLOW_CREDENTIALS = True                               # 인증 관련 요청 허용
 GH_SECRET = env("GH_SECRET")
+GH_CLIENT_ID = env("GH_CLIENT_ID", default="Ov23liPfh3H8KNxVkYCb" if DEBUG else "Ov23liPfh3H8KNxVkYCb")
 
 CF_ID = env("CF_ID")
 CF_TOKEN = env("CF_TOKEN")

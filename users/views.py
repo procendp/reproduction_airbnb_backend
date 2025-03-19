@@ -134,44 +134,69 @@ class GithubLogIn(APIView):
     def post(self, request):
         try:
             code = request.data.get("code")
+            redirect_uri = (
+                "http://127.0.0.1:3000/social/github"
+                if settings.DEBUG
+                else "https://airbnb-frontend-u9m8.onrender.com/social/github"
+            )
+            print(f"GitHub OAuth Flow - Code: {code}")
+            print(f"GitHub OAuth Flow - Redirect URI: {redirect_uri}")
+            
             access_token = requests.post(
-                    f"https://github.com/login/oauth/access_token?code={code}&client_id=Ov23liPfh3H8KNxVkYCb&client_secret={settings.GH_SECRET}",
-                    headers={"Accept": "application/json"},
-                    )
+                f"https://github.com/login/oauth/access_token",
+                data={
+                    "code": code,
+                    "client_id": settings.GH_CLIENT_ID,
+                    "client_secret": settings.GH_SECRET,
+                    "redirect_uri": redirect_uri,
+                },
+                headers={"Accept": "application/json"},
+            )
             
             access_token = access_token.json().get("access_token")
+            print(f"GitHub OAuth Flow - Access Token Response: {access_token}")
+            
+            if not access_token:
+                print("GitHub OAuth Flow - No access token received")
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            
             user_data = requests.get(
-                    "https://api.github.com/user",
-                    headers={
-                        "Authorization": f"Bearer {access_token}",
-                        "Accept": "application/json",
-                    },
-                )
+                "https://api.github.com/user",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
             user_data = user_data.json()
+            print(f"GitHub OAuth Flow - User Data: {user_data}")
+            
             user_emails = requests.get(
-                    "https://api.github.com/user/emails",
-                    headers={
-                        "Authorization": f"Bearer {access_token}",
-                        "Accept": "application/json",
-                    },
-                )
+                "https://api.github.com/user/emails",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
             user_emails = user_emails.json()
+            print(f"GitHub OAuth Flow - User Emails: {user_emails}")
+            
             try:
-                    user = User.objects.get(email=user_emails[0]["email"])
-                    login(request, user)
-                    return Response(status=status.HTTP_200_OK)
+                user = User.objects.get(email=user_emails[0]["email"])
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
             except User.DoesNotExist:
-                    user = User.objects.create(
-                        username=user_data.get("login"),
-                        email=user_emails[0]["email"],
-                        name=user_data.get("name"),
-                        avatar=user_data.get("avatar_url"),
-                    )
-                    user.set_unusable_password()
-                    user.save()
-                    login(request, user)
-                    return Response(status=status.HTTP_200_OK)
-        except Exception:
+                user = User.objects.create(
+                    username=user_data.get("login"),
+                    email=user_emails[0]["email"],
+                    name=user_data.get("name"),
+                    avatar=user_data.get("avatar_url"),
+                )
+                user.set_unusable_password()
+                user.save()
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"GitHub OAuth Flow - Error: {str(e)}")
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 class KakaoLogIn(APIView):
