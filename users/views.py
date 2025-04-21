@@ -203,12 +203,16 @@ class KakaoLogIn(APIView):
     def post(self, request):
         try:
             code = request.data.get("code")
+            print(f"Kakao OAuth Flow - Code: {code}")  # 코드 로깅
+            
             redirect_uri = (
                 "http://127.0.0.1:3000/social/kakao"
                 if settings.DEBUG
                 else "https://airbnb-frontend-u9m8.onrender.com/social/kakao"
             )
-            access_token = requests.post(
+            print(f"Kakao OAuth Flow - Redirect URI: {redirect_uri}")  # Redirect URI 로깅
+            
+            token_response = requests.post(
                 "https://kauth.kakao.com/oauth/token",
                 headers={"Content-Type": "application/x-www-form-urlencoded"},
                 data={
@@ -218,17 +222,26 @@ class KakaoLogIn(APIView):
                     "code": code,
                 },
             )
-            access_token = access_token.json().get("access_token")
-            user_data = requests.get(
+            print(f"Kakao OAuth Flow - Token Response: {token_response.text}")  # 토큰 응답 로깅
+            
+            access_token = token_response.json().get("access_token")
+            if not access_token:
+                print("Kakao OAuth Flow - No access token received")
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+                
+            user_response = requests.get(
                 "https://kapi.kakao.com/v2/user/me",
                 headers={
                     "Authorization": f"Bearer {access_token}",
                     "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
                 },
             )
-            user_data = user_data.json()
+            print(f"Kakao OAuth Flow - User Response: {user_response.text}")  # 사용자 정보 응답 로깅
+            
+            user_data = user_response.json()
             kakao_account = user_data.get("kakao_account")
             profile = kakao_account.get("profile")
+            
             try:
                 user = User.objects.get(email=kakao_account.get("email"))
                 login(request, user)
@@ -244,5 +257,6 @@ class KakaoLogIn(APIView):
                 user.save()
                 login(request, user)
                 return Response(status=status.HTTP_200_OK)
-        except Exception:
+        except Exception as e:
+            print(f"Kakao OAuth Flow - Error: {str(e)}")  # 에러 로깅
             return Response(status=status.HTTP_400_BAD_REQUEST)
