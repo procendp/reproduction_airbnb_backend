@@ -210,7 +210,18 @@ else:
         "https://airbnbclone-sloz.onrender.com",
     ]
 
-CORS_ALLOW_CREDENTIALS = True                               # 인증 관련 요청 허용
+CORS_ALLOW_CREDENTIALS = True
+
+# Session and Cookie Settings
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+if not DEBUG:
+    SESSION_COOKIE_DOMAIN = 'airbnbclone-sloz.onrender.com'
+    CSRF_COOKIE_DOMAIN = 'airbnbclone-sloz.onrender.com'
+
 GH_SECRET = env("GH_SECRET")
 GH_CLIENT_ID = env("GH_CLIENT_ID", default="Ov23liPfh3H8KNxVkYCb" if DEBUG else "Ov23liPfh3H8KNxVkYCb")
 
