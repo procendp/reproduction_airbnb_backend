@@ -203,13 +203,18 @@ class KakaoLogIn(APIView):
     def post(self, request):
         try:
             code = request.data.get("code")
+            redirect_uri = (
+                "http://127.0.0.1:3000/social/kakao"
+                if settings.DEBUG
+                else "https://airbnb-frontend-u9m8.onrender.com/social/kakao"
+            )
             access_token = requests.post(
                 "https://kauth.kakao.com/oauth/token",
                 headers={"Content-Type": "application/x-www-form-urlencoded"},
                 data={
                     "grant_type": "authorization_code",
                     "client_id": "49680a104a0135230f503a6343d1b368",
-                    "redirect_uri": "http://127.0.0.1:3000/social/kakao",
+                    "redirect_uri": redirect_uri,
                     "code": code,
                 },
             )
