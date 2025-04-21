@@ -190,19 +190,25 @@ REST_FRAMEWORK = {
 }
 
 if DEBUG:
-
     CORS_ALLOWED_ORIGINS = [
         "http://127.0.0.1:3000",
         "https://airbnbclone-sloz.onrender.com",
+        "https://airbnb-frontend-u9m8.onrender.com",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "http://127.0.0.1:3000",
         "https://airbnbclone-sloz.onrender.com",
+        "https://airbnb-frontend-u9m8.onrender.com",
     ]
-
 else:
-    CORS_ALLOWED_ORIGINS = ["https://airbnb-frontend-u9m8.onrender.com"]
-    CSRF_TRUSTED_ORIGINS = ["https://airbnb-frontend-u9m8.onrender.com"]
+    CORS_ALLOWED_ORIGINS = [
+        "https://airbnb-frontend-u9m8.onrender.com",
+        "https://airbnbclone-sloz.onrender.com",
+    ]
+    CSRF_TRUSTED_ORIGINS = [
+        "https://airbnb-frontend-u9m8.onrender.com",
+        "https://airbnbclone-sloz.onrender.com",
+    ]
 
 CORS_ALLOW_CREDENTIALS = True                               # 인증 관련 요청 허용
 GH_SECRET = env("GH_SECRET")
