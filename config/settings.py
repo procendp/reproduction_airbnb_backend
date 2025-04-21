@@ -192,29 +192,32 @@ REST_FRAMEWORK = {
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         "http://127.0.0.1:3000",
-        "https://airbnbclone-sloz.onrender.com",
         "https://airbnb-frontend-u9m8.onrender.com",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "http://127.0.0.1:3000",
-        "https://airbnbclone-sloz.onrender.com",
         "https://airbnb-frontend-u9m8.onrender.com",
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
         "https://airbnb-frontend-u9m8.onrender.com",
-        "https://airbnbclone-sloz.onrender.com",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "https://airbnb-frontend-u9m8.onrender.com",
-        "https://airbnbclone-sloz.onrender.com",
     ]
 
 CORS_ALLOW_CREDENTIALS = True
 
+# Security Settings
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 # Session and Cookie Settings
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
 
