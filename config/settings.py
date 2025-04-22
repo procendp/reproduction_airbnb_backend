@@ -221,11 +221,7 @@ SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SAMESITE = 'Lax'
-
-if not DEBUG:
-    SESSION_COOKIE_DOMAIN = 'airbnbclone-sloz.onrender.com'
-    CSRF_COOKIE_DOMAIN = 'airbnbclone-sloz.onrender.com'
+CSRF_COOKIE_SAMESITE = 'None'  # Changed to None to allow cross-site requests
 
 GH_SECRET = env("GH_SECRET")
 GH_CLIENT_ID = env("GH_CLIENT_ID", default="Ov23liPfh3H8KNxVkYCb" if DEBUG else "Ov23liPfh3H8KNxVkYCb")
