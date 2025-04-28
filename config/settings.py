@@ -38,7 +38,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "airbnbclone-sloz.onrender.com",
-    ]
+]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 
@@ -195,10 +195,12 @@ if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         "http://127.0.0.1:3000",
         "http://localhost:3000",
+        "http://127.0.0.1:3002",
+        "http://localhost:3002",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "http://127.0.0.1:3000",
-        "http://localhost:3000",
+        "http://127.0.0.1:3002",
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
@@ -218,10 +220,11 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
 # Session and Cookie Settings
+# SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'None'  # Changed to None to allow cross-site requests
+CSRF_COOKIE_SECURE = True
 
 GH_SECRET = env("GH_SECRET")
 GH_CLIENT_ID = env("GH_CLIENT_ID", default="Ov23liPfh3H8KNxVkYCb" if DEBUG else "Ov23liPfh3H8KNxVkYCb")
