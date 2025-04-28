@@ -198,7 +198,7 @@ class GithubLogIn(APIView):
                 return Response(status=status.HTTP_200_OK)
         except Exception as e:
             print(f"GitHub OAuth Flow - Error: {str(e)}")
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
 class KakaoLogIn(APIView):
     def post(self, request):
@@ -259,5 +259,5 @@ class KakaoLogIn(APIView):
                 login(request, user)
                 return Response(status=status.HTTP_200_OK)
         except Exception as e:
-            print(f"Kakao OAuth Flow - Error: {str(e)}")  # 에러 로깅
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            print(f"Kakao OAuth Flow - Error: {str(e)}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
