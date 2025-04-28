@@ -10,8 +10,8 @@ from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticated
 from users.models import User
 from . import serializers
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
 #private URL
@@ -101,6 +101,8 @@ class LogIn(APIView):
         
 @method_decorator(csrf_exempt, name="dispatch")
 class LogOut(APIView):
+    authentication_classes = []
+    permission_classes = []
     def post(self, request):
         logout(request)
         return Response({"ok": "bye!"})
