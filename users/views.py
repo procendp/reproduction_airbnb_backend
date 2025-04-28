@@ -10,6 +10,8 @@ from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticated
 from users.models import User
 from . import serializers
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 
 #private URL
@@ -97,12 +99,12 @@ class LogIn(APIView):
         else:
             return Response({"error": "wrong password"}, status=status.HTTP_400_BAD_REQUEST)
         
+@method_decorator(csrf_exempt, name="dispatch")
 class LogOut(APIView):
 
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        sleep(5)
         logout(request)
         return Response({"ok": "bye!"})
     
