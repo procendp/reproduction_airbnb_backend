@@ -101,9 +101,6 @@ class LogIn(APIView):
         
 @method_decorator(csrf_exempt, name="dispatch")
 class LogOut(APIView):
-
-    permission_classes = [IsAuthenticated]
-    
     def post(self, request):
         logout(request)
         return Response({"ok": "bye!"})
