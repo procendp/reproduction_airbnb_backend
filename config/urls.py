@@ -18,6 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+@ensure_csrf_cookie
+def get_csrf_token(request):
+    return JsonResponse({"detail": "CSRF cookie set"})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +34,5 @@ urlpatterns = [
     path('api/v1/medias/', include("medias.urls")),
     path('api/v1/wishlists/', include("wishlists.urls")),
     path("api/v1/users/", include("users.urls")),
+    path('api/v1/csrf/', get_csrf_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

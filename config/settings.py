@@ -220,11 +220,26 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
 # Session and Cookie Settings
-# SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'  # Changed to None to allow cross-site requests
+SESSION_COOKIE_DOMAIN = '.onrender.com' if not DEBUG else None
+CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_DOMAIN = '.onrender.com' if not DEBUG else None
+
+# Additional CORS Settings
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 GH_SECRET = env("GH_SECRET")
 GH_CLIENT_ID = env("GH_CLIENT_ID", default="Ov23liPfh3H8KNxVkYCb" if DEBUG else "Ov23liPfh3H8KNxVkYCb")
