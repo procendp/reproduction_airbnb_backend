@@ -40,21 +40,34 @@ class Me(APIView):
         
 class Users(APIView):
     def post(self, request):
-        password = request.data.get("password")
-        if not password:
-            raise ParseError
-        serializer = serializers.PrivateUserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            user.set_password(password)     # user.password = password --> 이건 hash화 되지 않은 raw password이기 때문에 사용 x
-            user.save()
-
-            login(request, user)
+        try:
+            password = request.data.get("password")
+            if not password:
+                return Response(
+                    {"error": "Password is required"}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             
-            serializer = serializers.PrivateUserSerializer(user)
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+            serializer = serializers.SignUpSerializer(data=request.data)
+            if serializer.is_valid():
+                user = serializer.save()
+                user.set_password(password)
+                user.save()
+                login(request, user)
+                return Response(
+                    serializers.PrivateUserSerializer(user).data,
+                    status=status.HTTP_201_CREATED
+                )
+            else:
+                return Response(
+                    {"error": serializer.errors}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
 class PublicUser(APIView):
     def get(self, request, username):
