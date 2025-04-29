@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from users.models import User
 from . import serializers
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 
 #private URL
@@ -19,6 +19,7 @@ class Me(APIView):
 
     permission_classes = [IsAuthenticated]
 
+    @method_decorator(ensure_csrf_cookie)
     def get(self, request):
         user = request.user
         serializer = serializers.PrivateUserSerializer(user)

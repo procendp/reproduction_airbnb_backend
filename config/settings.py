@@ -183,24 +183,20 @@ PAGE_SIZE = 5
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'config.authentication.TrustMeAuthentication',              # REST framework에서의 인증 절차 확인용
-        'rest_framework.authentication.SessionAuthentication',      # SessionAuthentication : django rest framework에게 로그인한 유저가 누구인지 알려주는
-        # 'rest_framework.authentication.BasicAuthentication',      # BasicAuthentication : URL 접속 시, 바로 username과 password 묻는 팝업 띄우고 요구
-        'rest_framework.authentication.TokenAuthentication',        # TokenAuthentication : 토큰 발급 후 인증 가능하도록
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'config.authentication.JWTAuthentication',
-    ]
+    ],
 }
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         "http://127.0.0.1:3000",
         "http://localhost:3000",
-        "http://127.0.0.1:3002",
-        "http://localhost:3002",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "http://127.0.0.1:3000",
-        "http://127.0.0.1:3002",
+        "http://localhost:3000",
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
@@ -222,12 +218,10 @@ SECURE_HSTS_PRELOAD = True
 # Session and Cookie Settings
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_DOMAIN = '.onrender.com' if not DEBUG else None
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_DOMAIN = '.onrender.com' if not DEBUG else None
 
-# Additional CORS Settings
+# CORS Headers
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_HEADERS = [
     'accept',
