@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.exceptions import ParseError, NotFound
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from users.models import User
 from . import serializers
 from django.utils.decorators import method_decorator
@@ -96,7 +96,16 @@ class ChangePassword(APIView):
         else:
             raise ParseError
         
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class InitAPI(APIView):
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        return Response({"detail": "CSRF cookie set"})
+
 class LogIn(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
@@ -145,6 +154,7 @@ class JWTLogIn(APIView):
             return Response({"error": "wrong password"})
         
 class GithubLogIn(APIView):
+    permission_classes = [AllowAny]
 
     def post(self, request):
         try:
@@ -215,6 +225,8 @@ class GithubLogIn(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
 class KakaoLogIn(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         try:
             code = request.data.get("code")

@@ -23,6 +23,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from users.views import InitAPI
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -39,4 +40,5 @@ urlpatterns = [
     path('api/v1/wishlists/', include("wishlists.urls")),
     path("api/v1/users/", include("users.urls")),
     path('api/v1/csrf/', get_csrf_token),
+    path("api/v1/init/", InitAPI.as_view(), name="init-api"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
